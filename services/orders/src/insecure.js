@@ -112,12 +112,13 @@ function mountInsecureRoutes(app, deps) {
   app.post('/insecure/register', (req, res) => {
     const { username, password } = req.body || {};
     if (!username || !password) return res.status(400).json({ error: 'both required' });
-    const hash = crypto.createHash('md5').update(password).digest('hex');
-    res.json({ username, password_hash: hash, algorithm: 'md5' });
-
-    // FIXED VERSION: argon2id, or bcrypt/scrypt with a sensible cost.
-    // The point of a password hash is to be SLOW.
-    // const hash = await argon2.hash(password, { type: argon2.argon2id });
+    // FIXED (was VULN-4): MD5 has no salt and no work factor, and is fast
+    // to compute - exactly the wrong property for a password hash. Using
+    // Node's built-in scrypt (deliberately slow, salted, memory-hard) instead.
+    const salt = crypto.randomBytes(16).toString('hex');
+    const derivedKey = crypto.scryptSync(password, salt, 64);
+    const hash = `${salt}:${derivedKey.toString('hex')}`;
+    res.json({ username, password_hash: hash, algorithm: 'scrypt' });
   });
 
   // --------------------------------------------------------------------------

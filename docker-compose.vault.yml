@@ -15,7 +15,7 @@
 services:
   openbao:
     image: openbao/openbao:2.0.0
-    command: ["server", "-config=/openbao/config/config.hcl"]
+    command: ["server"]
     cap_add: [IPC_LOCK]        # stops secrets being swapped to disk
     environment:
       BAO_ADDR: http://127.0.0.1:8200

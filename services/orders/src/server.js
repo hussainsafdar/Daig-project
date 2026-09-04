@@ -154,7 +154,10 @@ module.exports = function startServer(config) {
     }
   });
 
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
   app.get('/api/orders/:id', async (req, res) => {
+    if (!UUID_RE.test(req.params.id)) return res.status(404).json({ error: 'not found' });
     const { rows } = await q('get_order',
       `SELECT o.*, json_agg(e.* ORDER BY e.created_at) AS events
          FROM orders o LEFT JOIN order_events e ON e.order_id = o.id

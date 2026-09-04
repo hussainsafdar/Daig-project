@@ -24,7 +24,7 @@ resource "aws_secretsmanager_secret_version" "db" {
     port     = 5432
     # sslmode=require forces TLS to RDS (match the Azure connection string).
     # Enforce it server-side too via rds.force_ssl=1 in the parameter group.
-    url      = "postgresql://${var.db_username}:${urlencode(random_password.db.result)}@${aws_db_instance.main.address}:5432/${var.db_name}?sslmode=require"
+    url = "postgresql://${var.db_username}:${urlencode(random_password.db.result)}@${aws_db_instance.main.address}:5432/${var.db_name}?sslmode=require"
   })
 }
 

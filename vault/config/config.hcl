@@ -32,7 +32,6 @@ cluster_addr = "http://openbao:8201"
 # refuses to start if it cannot write the audit device - and a vault that will
 # not start because of logging is its own outage.
 
-disable_mlock = false
 
 # PRODUCTION also wants:
 #   seal "awskms" { ... }        auto-unseal, so a restart does not need a human

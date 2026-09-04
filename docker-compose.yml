@@ -14,6 +14,10 @@ x-app-env: &app-env
   CHAOS_SLOW_DISPATCH: ${CHAOS_SLOW_DISPATCH:-false}
   CHAOS_HOT_SURGE_LOOP: ${CHAOS_HOT_SURGE_LOOP:-false}
   CHAOS_DROP_RATE: ${CHAOS_DROP_RATE:-0}
+  INSECURE_MODE: ${INSECURE_MODE:-false}
+  BAO_ADDR: ${BAO_ADDR}
+  BAO_ROLE_ID: ${BAO_ROLE_ID}
+  BAO_SECRET_ID: ${BAO_SECRET_ID}
 
 x-app-logging: &app-logging
   driver: json-file

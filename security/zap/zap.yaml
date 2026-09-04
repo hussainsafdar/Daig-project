@@ -1,0 +1,77 @@
+env:
+  contexts:
+  - excludePaths: []
+    name: baseline
+    urls:
+    - http://web:8080
+  parameters:
+    failOnError: true
+    progressToStdout: false
+jobs:
+- parameters:
+    enableTags: false
+    maxAlertsPerRule: 10
+  type: passiveScan-config
+- parameters:
+    maxDuration: 1
+    url: http://web:8080
+  type: spider
+- parameters:
+    maxDuration: 0
+  type: passiveScan-wait
+- parameters:
+    format: Long
+    summaryFile: /home/zap/zap_out.json
+  rules:
+  - action: WARN
+    customMessage: Incomplete cache-control - low risk on an API
+    id: 10015
+  - action: IGNORE
+    customMessage: Information disclosure in comments - teaching app, comments are
+      the point
+    id: 10027
+  - action: IGNORE
+    customMessage: Timestamp disclosure - order timestamps are a feature
+    id: 10096
+  - action: WARN
+    customMessage: Modern web application detection - informational
+    id: 10109
+  - action: WARN
+    customMessage: Permissions policy header missing
+    id: 10063
+  - action: WARN
+    customMessage: Sec-Fetch headers - not applicable to a JSON API
+    id: 90005
+  - action: FAIL
+    customMessage: SQL injection
+    id: 40018
+  - action: FAIL
+    customMessage: Reflected XSS
+    id: 40012
+  - action: FAIL
+    customMessage: Persistent XSS
+    id: 40014
+  - action: FAIL
+    customMessage: Server-side code injection
+    id: 90019
+  - action: FAIL
+    customMessage: Remote OS command injection
+    id: 90020
+  - action: FAIL
+    customMessage: CRLF injection
+    id: 40003
+  type: outputSummary
+- parameters:
+    reportDescription: ''
+    reportDir: /zap/wrk/
+    reportFile: /zap/wrk/report.html
+    reportTitle: ZAP Scanning Report
+    template: traditional-html
+  type: report
+- parameters:
+    reportDescription: ''
+    reportDir: /zap/wrk/
+    reportFile: /zap/wrk/report.json
+    reportTitle: ZAP Scanning Report
+    template: traditional-json
+  type: report
